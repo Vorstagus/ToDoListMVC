@@ -1,0 +1,93 @@
+﻿ @model IEnumerable<ToDoListMVC.Models.RecordModel>
+@{
+    ViewData["Title"] = "Dashboard";
+    string[] TableHeaders = new String[] {
+              "Name",
+              "Description",
+              "Created Date",
+              "Modifiers"
+    };
+
+ 
+//GUEST
+
+
+    
+ 
+
+
+if (ViewBag.session != null)
+{
+    <div class="text-center">
+          <h1 class="display-4">Welcome to the Dashboard</h1>
+          <h2>Here you can view your assignments</h2>    
+    </div>
+
+
+
+
+    <div class="table" onload="RecordsList" asp-controller="RecordsController" method="get">
+
+                     <table class="table table-bordered table-hover">
+                     
+                     <thead>
+                         <tr>         
+                             @foreach(var head in TableHeaders)
+                 {
+                             <th>@head</th>
+                 }
+                         </tr>  
+                     </thead>
+
+                     <tbody>
+                        @{
+                       
+
+                        if (Model != null)
+                        {
+                            foreach (var Data in Model)
+                            {
+                                        <tr>
+                                            <td>@Data.Name</td>
+                                            <td>@Data.Description</td>
+                                            <td>@Data.CreatedDate</td>
+                                            <td>
+                                               @Html.ActionLink("Edit", "LoadEditRecord", "RecordsController", new {id = Data.Id}) |
+                                               @Html.ActionLink("Delete", "DeleteRecord", "RecordsController", new {id = Data.Id})
+                                            </td>
+                                        </tr>
+                            }
+                        }
+                                }
+                     </tbody>
+
+                     </table>
+                     
+                     
+    </div>
+
+
+
+
+
+
+
+
+
+
+} else
+{
+    <div class="text-center">
+                             <h1 class="display-4">Welcome to the management application</h1>
+                             <h2>In order to create assignments, you need first to register and login.</h2>
+
+    </div>
+
+}
+}
+    @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+     
+    }
+    }
